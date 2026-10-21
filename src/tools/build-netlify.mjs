@@ -29,5 +29,5 @@ await build({
 });
 
 for (const asset of assets) await copyFile(join(panel, asset), join(destination, 'data', asset));
-
+const version = (await readFile(join(panel, 'release.mjs'), 'utf8')).match(/PANEL_VERSION = '([^']+)'/)[1];
 console.log(`Netlify 部署包已生成（兼容内核 ${version}）：` + destination);
