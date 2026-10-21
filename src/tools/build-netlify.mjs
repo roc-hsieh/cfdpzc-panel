@@ -3,21 +3,21 @@ import { mkdir, readFile, writeFile, copyFile, readdir } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url';
 import { resolve, join } from 'node:path';
 
-const panel = fileURLToPath(new URL('../', import.meta.url));
+const panel = fileURLToPath(new URL('../../', import.meta.url));
 const destination = resolve(process.argv[2] || join(panel, 'dist/netlify'));
 await mkdir(destination, { recursive: true });
 if ((await readdir(destination)).length) throw new Error('Output directory must be empty to avoid stale files');
-await mkdir(join(destination, 'functions/api'));
-await mkdir(join(destination, 'public'));
+await mkdir(join(destination, '.netlify/functions'), { recursive: true });
+await mkdir(join(destination, 'public'), { recursive: true });
 await writeFile(join(destination, 'public/.gitkeep'), '');
 
 const assets = ['index.html', 'bridge.js', 'theme.css', 'singbox-rules.json.gz', 'singbox-rules.LICENSE', 'singbox-rules.NOTICE.md'];
 await build({
   entryPoints: [join(panel, 'src/tools/netlify-handler.mjs')],
-  outfile: join(destination, 'functions/api/index.js'),
+  outfile: join(destination, '.netlify/functions/api.js'),
   bundle: true,
   platform: 'node',
-  format: 'cjs',
+  format: 'esm',
   target: 'node22',
   minify: true,
   charset: 'utf8',
