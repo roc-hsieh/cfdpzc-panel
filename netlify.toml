@@ -1,7 +1,8 @@
 [build]
-  publish = "dist/netlify/public"
   command = "npm run build:netlify"
+  publish = "dist/netlify/public"
 
 [functions]
   directory = "dist/netlify/functions"
-  include_files = ["dist/netlify/data/**"]
+  included_files = ["dist/netlify/data/**"]
+
