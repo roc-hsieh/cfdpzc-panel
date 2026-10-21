@@ -1,11 +1,7 @@
 [build]
-  publish = "dist/netlify/public"
-  functions = "dist/netlify/functions"
   command = "npm run build:netlify"
+  publish = "dist/netlify/public"
 
-# Redirect all requests to the Netlify Function handling the API (optional)
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/api"
-  status = 200
-  force = true
+[functions]
+  directory = "dist/netlify/functions"
+  included_files = ["dist/netlify/data/**"]
