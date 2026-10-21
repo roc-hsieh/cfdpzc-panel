@@ -1,10 +1,12 @@
 import { build } from 'esbuild';
-import { mkdir, readFile, writeFile, copyFile, readdir } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, copyFile, readdir, rm } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, join } from 'node:path';
 
 const panel = fileURLToPath(new URL('../', import.meta.url));
 const destination = resolve(process.argv[2] || join(panel, '../dist/netlify'));
+// 默认输出目录只存放本脚本的构建产物，先清空以免旧产物导致构建失败；自定义目录仍要求为空。
+if (!process.argv[2]) await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
 if ((await readdir(destination)).length) throw new Error('输出目录必须为空，避免把旧文件或凭据带进部署包');
 await mkdir(join(destination, 'functions'));
