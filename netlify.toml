@@ -1,0 +1,11 @@
+[build]
+  publish = "dist/netlify/public"
+  functions = "dist/netlify/functions"
+  command = "npm run build:netlify"
+
+# Redirect all requests to the Netlify Function handling the API (optional)
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/api"
+  status = 200
+  force = true
